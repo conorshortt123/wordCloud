@@ -1,17 +1,12 @@
 package ie.gmit.sw;
 
-import java.io.FileNotFoundException;
-
 public class Runner {
 	public static void main(String[] args) throws Exception {
-		
+
+		//Runner: main class of project. Makes a menu object and calls the show method.
 		Menu menu = new Menu();
-		
-		try {
-			menu.show();
-		} catch (FileNotFoundException e) {
-			System.out.println("[ERROR] File/URL not found.");
-		}
+		menu.show();
+
 	}
 }
 

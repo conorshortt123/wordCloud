@@ -15,7 +15,10 @@ public class fileReader {
 		int i = 0;
 		String word;
 		
-		// * Parsing file contents and adding to each ArrayList
+		/*
+		 *  Parsing file contents and adding to each ArrayList
+		 *  Running Time: O(2n)
+		 */
 
 		while(ignore.hasNextLine()) {
 			ignoreWords.add(ignore.next());
@@ -24,11 +27,17 @@ public class fileReader {
 			text.add(input.next());
 		}
 		
-		// * Finding words in text list that need to be removed according to the ignoreWords list.
+		/*
+		 *  Finding words in text list that need to be removed according to the ignoreWords list.
+		 *  Running Time: O(n^2)
+		 */
 		 
-		while(i < text.size()) {	
+		while(i < text.size()) {
 			word = text.get(i).toLowerCase();
 			if(ignoreWords.contains(word)) {
+				text.remove(i);
+			}
+			else if(text.get(i).length() < 2) {
 				text.remove(i);
 			}
 			else {

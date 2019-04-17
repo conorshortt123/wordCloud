@@ -13,7 +13,11 @@ public class frequencyTable {
 				
 		int i = 0;
 		String key = null;
-			
+		
+		/*
+		 * Adding ArrayList words to the HashMap, increments value if word is already contained in the map. Else adds the key and sets value to 1.
+		 * Running Time: O(n)
+		 */
 		for(i=0;i<text.size();i++) {
 			
 			key = text.get(i).toUpperCase();
@@ -22,11 +26,22 @@ public class frequencyTable {
 				frequency.put(key, frequency.get(key) + 1);
 			} else {
 				frequency.put(key, 1);
-			}	
+			}
+			
 		}
 		
+		/*
+		 * Put values from the hashmap into a LinkedList to be sorted
+		 * Running Time O(n)
+		 */
 		List<Integer> values = new LinkedList<Integer>(frequency.values());
 		
+		/*
+		 * Sorts the list of values by order of value, lowest element at index 0 and so on.
+		 * I used this method as I wanted the words on the cloud image to increase in 
+		 * ascending order, having the words grow larger then the previous.
+		 * Running time O(n^2)
+		 */
 		Collections.sort(values, new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
@@ -34,48 +49,38 @@ public class frequencyTable {
 			}
 		});
 		
-		System.out.println("Enter the maximum number of words you would like to display:");
-		Menu.maxWords = input.nextInt();
-		
-		List<Integer> frequentValues = new LinkedList<Integer>();
-		List<String> frequentKeys = new LinkedList<String>();
-		String commonKey, prevKey = null;
-		int commonValue, increment = 0;
-		
-		i = 1;
 		/*
-		 * - Values is a sorted list of all the values in the HashMap, sorted from lowest to highest, so I values.get(lastIndex - i)
-		 * - getKey gets the key associated with that value.
-		 * - i starts at 1, I get commonKey and commonValue and compare commonKey to the previous commonKey, which is initially null.
-		 * - The IF statement fires if the commonKey isn't equal to the previous one.
+		 * Put values from the LinkedList into a LinkedHashSet, and then into an ArrayList: Removes duplicate values and keeps order.
+		 * Running Time O(2n)
 		 */
-		while(increment < Menu.maxWords) {	
-			commonValue = values.get(frequency.size()-i);
-			commonKey = getKey(frequency, commonValue);
+		LinkedHashSet<Integer> hashSet = new LinkedHashSet<>(values);
+		ArrayList<Integer> valuesNoDuplicates = new ArrayList<>(hashSet);
+		
+		//Runs if the user hasn't input the name and max words from the menu class.
+		if(Menu.setVars < 2)
+		{
+			System.out.println("Enter the maximum number of words you would like to display:");
+			Menu.maxWords = input.nextInt();
 			
-			if(!(commonKey.equalsIgnoreCase(prevKey)))
-			{
-				frequentValues.add(commonValue); 
-				frequentKeys.add(commonKey);
-				increment++;
+			if(Menu.maxWords > valuesNoDuplicates.size()) {
+				System.out.println("Max words exceeds list of frequent words! Frequent word list size = " + valuesNoDuplicates.size());
+				System.out.println("Setting max words = to list size.");
+				Menu.maxWords = valuesNoDuplicates.size();
 			}
-			prevKey = commonKey;
-			i++;
+			
+			System.out.println("Enter the name of the image:(don't include .png)");
+			Menu.imageName = input.next();
+			Menu.imageName += ".png";
 		}
 		
-		for(i=0;i<frequentKeys.size();i++) {
-			System.out.println(frequentKeys.get(i) + " " + frequentValues.get(i));
-		}
-
-		/*for(i=0;i<frequentKeys.size();i++) {
-			System.out.println(frequentKeys.get(i) + " was said " + frequentValues.get(i) + " times.");
-		}*/
-		
-		/*wordCloudGen g = new wordCloudGen();
-		g.generator(frequency);*/
-		//list.size() - 1 for last index. Subtract -2 for second last and so on.
+		wordCloudGen g = new wordCloudGen();
+		g.generator(frequency, valuesNoDuplicates);
 	}
 	
+	/*
+	 * Returns the key from the HashMap from a given value.
+	 * Running Time: O(n)
+	 */
 	public <K, V> K getKey(Map<K, V> map, V value) {
 	    for (Entry<K, V> entry : map.entrySet()) {
 	        if (entry.getValue().equals(value)) {

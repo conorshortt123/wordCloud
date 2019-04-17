@@ -17,7 +17,10 @@ public class urlReader {
 		int i = 0;
 		String word;
 		
-		// * Parsing URL contents and adding to each ArrayList
+		/*
+		 *  Parsing URL contents and adding to each ArrayList
+		 *  Running Time: O(2n)
+		 */
 
 		while(ignore.hasNextLine()) {
 			ignoreWords.add(ignore.next());
@@ -26,7 +29,10 @@ public class urlReader {
 			text.add(input.next());
 		}
 		
-		// * Finding words in text list that need to be removed according to the ignoreWords list.
+		/*
+		 *  Finding words in text list that need to be removed according to the ignoreWords list.
+		 *  Running Time: O(n^2)
+		 */
 		 
 		while(i < text.size()) {
 			word = text.get(i).toLowerCase();
